@@ -5,7 +5,10 @@ const spin = document.querySelector<HTMLButtonElement>("#spin")!;
 const face = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 face.setAttribute("viewBox", "0 0 200 200");
 face.setAttribute("role", "img");
-face.setAttribute("aria-label", "A neutral face");
+face.setAttribute(
+  "aria-label",
+  "A playful face with 120 freckles across its cheeks and nose",
+);
 
 const head = document.createElementNS("http://www.w3.org/2000/svg", "ellipse");
 head.setAttribute("cx", "100");
@@ -58,6 +61,42 @@ mouth.setAttribute("stroke", "#302c29");
 mouth.setAttribute("stroke-width", "4");
 mouth.setAttribute("stroke-linecap", "round");
 face.append(mouth);
+
+// Branch A: Create 120 freckles using SVG circles.
+// The freckles form two clusters across the cheeks.
+for (let i = 0; i < 120; i++) {
+  const dot = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "circle",
+  );
+
+  // Put 60 freckles on each cheek.
+  const isLeftCheek = i < 60;
+  const index = i % 60;
+
+  // Arrange the freckles in rows with slight variations.
+  const row = Math.floor(index / 12);
+  const column = index % 12;
+
+  const centerX = isLeftCheek ? 60 : 140;
+
+  const x = centerX + (column - 5.5) * 3.2 +
+    Math.sin(index * 2.3) * 1.2;
+
+  const y = 105 + row * 5 +
+    Math.cos(index * 1.7) * 1.2;
+
+  // Different sizes make the freckles look more natural.
+  const radius = 0.8 + (index % 3) * 0.3;
+
+  dot.setAttribute("cx", String(x));
+  dot.setAttribute("cy", String(y));
+  dot.setAttribute("r", String(radius));
+  dot.setAttribute("fill", "#a65d35");
+  dot.setAttribute("opacity", "0.85");
+
+  face.append(dot);
+}
 
 portrait.append(face);
 
